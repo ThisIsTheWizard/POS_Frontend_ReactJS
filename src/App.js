@@ -1,31 +1,23 @@
-import { gql, useQuery } from '@apollo/client'
-import './App.css'
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
 
-const GET_MULTILPLE_USERS = gql`
-  query {
-    users {
-      _id
-      name
-      email
-    }
-  }
-`
+// layouts
+import Dashboard from './pages/dashboard/index'
+import VerticalLayout from './components/layouts/Auth'
+
+import './theme.scss'
 
 const App = () => {
-  const { loading, error, data } = useQuery(GET_MULTILPLE_USERS)
-  const users = () => {
-    if (loading) {
-      return 'Loading...'
-    } else if (error) {
-      return error.message
-    } else if (data) {
-      return data.users.map((d) => <div key={d._id}>{d.name}</div>)
-    }
-  }
   return (
-    <div>
-      <div>{users()}</div>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<VerticalLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="*" element={<div>Error page</div>} />
+        </Route>
+      </Routes>
+    </>
   )
 }
 
