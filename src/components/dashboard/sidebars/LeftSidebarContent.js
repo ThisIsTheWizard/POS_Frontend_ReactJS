@@ -42,7 +42,7 @@ const LeftSidebarContent = () => {
       const items = ul.getElementsByTagName('a')
 
       for (let i = 0; i < items.length; ++i) {
-        if (pathname === items[i]?.pathname) {
+        if (pathname.current === items[i]?.pathname) {
           matchingMenuItem = items[i]
           break
         }
