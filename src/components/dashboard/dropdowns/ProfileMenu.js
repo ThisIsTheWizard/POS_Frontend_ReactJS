@@ -8,7 +8,7 @@ import {
 import avatar2 from '../../../assets/images/users/avatar-2.jpg'
 
 const ProfileMenu = () => {
-  const username = 'Admin'
+  const username = 'The Wizard'
   const [isShowProfileMenu, setIsShowProfileMenu] = useState(false)
 
   return (
