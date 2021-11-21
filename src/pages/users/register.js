@@ -1,19 +1,21 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import {
-  Alert,
   Row,
   Col,
-  Input,
   Button,
-  Form,
+  Alert,
   Container,
   Label,
-  FormGroup
+  Form,
+  FormGroup,
+  Input
 } from 'reactstrap'
+
+// import images
 import logoDark from '../../assets/images/logo-dark.png'
 
-const Login = () => {
+const Register = () => {
   return (
     <>
       <div className="home-btn d-none d-sm-block">
@@ -21,7 +23,6 @@ const Login = () => {
           <i className="mdi mdi-home-variant h2 text-white"></i>
         </Link>
       </div>
-
       <div>
         <Container fluid className="p-0">
           <Row className="no-gutters">
@@ -33,24 +34,44 @@ const Login = () => {
                       <div>
                         <div className="text-center">
                           <div>
-                            <Link to="/" className="logo">
+                            <Link to="#" className="logo">
                               <img src={logoDark} height="20" alt="logo" />
                             </Link>
                           </div>
 
-                          <h4 className="font-size-18 mt-4">Welcome Back !</h4>
+                          <h4 className="font-size-18 mt-4">
+                            Register account
+                          </h4>
                           <p className="text-muted">
-                            Sign in to continue to Nazox.
+                            Get your free Nazox account now.
                           </p>
                         </div>
 
-                        <Alert color="danger">Login Error</Alert>
+                        <Alert color="success">
+                          Registration Done Successfully.
+                        </Alert>
+
+                        <Alert color="danger">Register Error</Alert>
 
                         <div className="p-2 mt-5">
                           <Form
-                            className="form-horizontal"
                             // onValidSubmit={this.handleSubmit}
+                            className="form-horizontal"
                           >
+                            <FormGroup className="auth-form-group-custom mb-4">
+                              <i className="ri-mail-line auti-custom-input-icon"></i>
+                              <Label htmlFor="useremail">Email</Label>
+                              <Input
+                                name="email"
+                                value="email"
+                                validate={{ email: true, required: true }}
+                                type="email"
+                                className="form-control"
+                                id="useremail"
+                                placeholder="Enter email"
+                              />
+                            </FormGroup>
+
                             <FormGroup className="auth-form-group-custom mb-4">
                               <i className="ri-user-2-line auti-custom-input-icon"></i>
                               <Label htmlFor="username">Username</Label>
@@ -60,7 +81,6 @@ const Login = () => {
                                 type="text"
                                 className="form-control"
                                 id="username"
-                                validate={{ email: true, required: true }}
                                 placeholder="Enter username"
                               />
                             </FormGroup>
@@ -78,50 +98,35 @@ const Login = () => {
                               />
                             </FormGroup>
 
-                            <div className="custom-control custom-checkbox">
-                              <Input
-                                type="checkbox"
-                                className="custom-control-input"
-                                id="customControlInline"
-                              />
-                              <Label
-                                className="custom-control-label"
-                                htmlFor="customControlInline"
-                              >
-                                Remember me
-                              </Label>
-                            </div>
-
-                            <div className="mt-4 text-center">
+                            <div className="text-center">
                               <Button
                                 color="primary"
                                 className="w-md waves-effect waves-light"
                                 type="submit"
                               >
-                                Log In
+                                {false ? 'Loading ...' : 'Register'}
                               </Button>
                             </div>
 
                             <div className="mt-4 text-center">
-                              <Link
-                                to="/forgot-password"
-                                className="text-muted"
-                              >
-                                <i className="mdi mdi-lock mr-1"></i> Forgot
-                                your password?
-                              </Link>
+                              <p className="mb-0">
+                                By registering you agree to the Nazox{' '}
+                                <Link to="#" className="text-primary">
+                                  Terms of Use
+                                </Link>
+                              </p>
                             </div>
                           </Form>
                         </div>
 
                         <div className="mt-5 text-center">
                           <p>
-                            Don't have an account ?
+                            Already have an account ?
                             <Link
-                              to="/register"
+                              to="/login"
                               className="font-weight-medium text-primary"
                             >
-                              Register
+                              Login
                             </Link>
                           </p>
                           <p>
@@ -148,4 +153,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Register

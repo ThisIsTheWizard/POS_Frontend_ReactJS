@@ -2,39 +2,32 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { useLocation } from 'react-router'
 
-// layouts
-import AuthLayout from './layouts/Auth'
-import DefaultLayout from './layouts/Default'
+// Layouts
+import AuthLayout from './layouts/AuthLayout'
+import GuestLayout from './layouts/GuestLayout'
 
+// Pages
 import Dashboard from './pages/dashboard/index'
 import Login from './pages/users/login'
-
-import './theme.scss'
+import Register from './pages/users/register'
 
 const App = () => {
-  const [isDefaultRoutes, SetIsDefaultRoutes] = useState(true)
   const location = useRef(useLocation())
+  const [isLoggedIn, SetIsLoggedIn] = useState(true)
 
   useEffect(() => {
     if (
       location &&
       location.current &&
-      location.current.pathname.includes('/dashboard')
+      ['/login', '/register'].includes(location.current.pathname)
     ) {
-      SetIsDefaultRoutes(false)
+      SetIsLoggedIn(false)
     }
   }, [])
 
   return (
     <>
-      {isDefaultRoutes ? (
-        <DefaultLayout>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<div>Error page</div>} />
-          </Routes>
-        </DefaultLayout>
-      ) : (
+      {isLoggedIn ? (
         <AuthLayout>
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
@@ -42,6 +35,13 @@ const App = () => {
             <Route path="*" element={<div>Error page</div>} />
           </Routes>
         </AuthLayout>
+      ) : (
+        <GuestLayout>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </GuestLayout>
       )}
     </>
   )

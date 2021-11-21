@@ -1,7 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+
+// Main Components
 import App from './App'
+// Main Styles
+import './assets/scss/theme.scss'
+
+// Apollo GraphQL Provider And Client
 import { ApolloProvider } from '@apollo/client'
 import client from './api/graphql'
 

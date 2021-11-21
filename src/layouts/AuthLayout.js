@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
-const DefaultLayout = (props) => {
+// Layout Related Components
+import Header from '../components/dashboard/common/Header'
+import LeftSideBar from '../components/dashboard/sidebars/LeftSidebar'
+import Footer from '../components/dashboard/common/Footer'
+
+const AuthLayout = (props) => {
   const [isShowPreloader, setIsShowPreloader] = useState(true)
   useEffect(() => {
     setIsShowPreloader((isShowPreloader) => !isShowPreloader)
@@ -18,9 +23,16 @@ const DefaultLayout = (props) => {
         </div>
       ) : null}
 
-      <>{props.children}</>
+      <div id="layout-wrapper">
+        <Header />
+        <LeftSideBar />
+        <div className="main-content">
+          {props.children}
+          <Footer />
+        </div>
+      </div>
     </>
   )
 }
 
-export default DefaultLayout
+export default AuthLayout
