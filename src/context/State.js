@@ -47,9 +47,8 @@ const AppState = ({ children }) => {
   const actions = { setLoading, setIsLoggedIn, setAuthUser }
 
   const handleAuthentication = useCallback(() => {
-    setLoading(true)
-
     if (state.loginAccessToken) {
+      setLoading(true)
       client
         .query({ query: AUTH_USER_QUERY })
         .then((res) => {

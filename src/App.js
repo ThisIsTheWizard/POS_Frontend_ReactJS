@@ -25,13 +25,11 @@ const MyRoutes = () => {
     <Routes>
       {/* Authenticated Routes */}
       <Route path="/" element={<AuthLayout AppContext={AppContext} />}>
-        <Route path="/" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
 
       {/* Guest Routes */}
       <Route path="/" element={<GuestLayout AppContext={AppContext} />}>
-        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>
@@ -48,7 +46,7 @@ const App = () => {
   return (
     <>
       {/* Loader */}
-      {isLoading ? <Loader AppContext={AppContext} /> : <MyRoutes />}
+      {isLoading ? <Loader /> : <MyRoutes />}
 
       {/* Toast Component */}
       <ToastContainer
