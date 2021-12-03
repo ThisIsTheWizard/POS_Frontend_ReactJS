@@ -1,37 +1,43 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
+import { Navigate, Outlet } from 'react-router-dom'
 
 // Layout Related Components
 import Header from '../components/dashboard/common/Header'
 import LeftSideBar from '../components/dashboard/sidebars/LeftSidebar'
 import Footer from '../components/dashboard/common/Footer'
 
-const AuthLayout = (props) => {
-  const [isShowPreloader, setIsShowPreloader] = useState(true)
+// Toast Triggering Object
+import { toast } from 'react-toastify'
+import { useCallback } from 'react/cjs/react.development'
+
+const AuthLayout = ({ AppContext }) => {
+  const { isLoggedIn, authUser } = useContext(AppContext)
+
+  const setToasMessageForAuthUser = useCallback(() => {
+    if (isLoggedIn && authUser && authUser.name) {
+      toast.success(`${authUser?.name}, Welcome to dashboard!`)
+    }
+  }, [isLoggedIn, authUser])
+
   useEffect(() => {
-    setIsShowPreloader((isShowPreloader) => !isShowPreloader)
+    setToasMessageForAuthUser()
+    // eslint-disable-next-line
   }, [])
 
-  return (
-    <>
-      {isShowPreloader ? (
-        <div id="preloader">
-          <div id="status">
-            <div className="spinner">
-              <i className="ri-loader-line spin-icon"></i>
-            </div>
-          </div>
-        </div>
-      ) : null}
+  return isLoggedIn ? (
+    <div id="layout-wrapper">
+      <Header />
 
-      <div id="layout-wrapper">
-        <Header />
-        <LeftSideBar />
-        <div className="main-content">
-          {props.children}
-          <Footer />
-        </div>
+      <LeftSideBar />
+
+      <div className="main-content">
+        <Outlet />
+
+        <Footer />
       </div>
-    </>
+    </div>
+  ) : (
+    <Navigate to="/login" replace />
   )
 }
 

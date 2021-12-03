@@ -1,48 +1,69 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useContext } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { useLocation } from 'react-router'
+
+// AppContext From Context API
+import AppContext from './context/Context'
+
+// Loader
+import Loader from './components/common/Loader'
 
 // Layouts
 import AuthLayout from './layouts/AuthLayout'
 import GuestLayout from './layouts/GuestLayout'
+import ErrorLayout from './layouts/ErrorLayout'
 
 // Pages
-import Dashboard from './pages/dashboard/index'
 import Login from './pages/users/login'
 import Register from './pages/users/register'
+import Dashboard from './pages/dashboard/index'
+
+// Toast Components
+import { ToastContainer, Slide } from 'react-toastify'
+
+const MyRoutes = () => {
+  return (
+    <Routes>
+      {/* Authenticated Routes */}
+      <Route path="/" element={<AuthLayout AppContext={AppContext} />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Route>
+
+      {/* Guest Routes */}
+      <Route path="/" element={<GuestLayout AppContext={AppContext} />}>
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
+
+      {/* Error Routes */}
+      <Route path="*" element={<ErrorLayout />}></Route>
+    </Routes>
+  )
+}
 
 const App = () => {
-  const location = useRef(useLocation())
-  const [isLoggedIn, SetIsLoggedIn] = useState(true)
-
-  useEffect(() => {
-    if (
-      location &&
-      location.current &&
-      ['/login', '/register'].includes(location.current.pathname)
-    ) {
-      SetIsLoggedIn(false)
-    }
-  }, [])
-
+  const { isLoading } = useContext(AppContext)
+  console.log(isLoading)
   return (
     <>
-      {isLoggedIn ? (
-        <AuthLayout>
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/" element={<Dashboard />} />
-            <Route path="*" element={<div>Error page</div>} />
-          </Routes>
-        </AuthLayout>
-      ) : (
-        <GuestLayout>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </GuestLayout>
-      )}
+      {/* Loader */}
+      {isLoading ? <Loader AppContext={AppContext} /> : <MyRoutes />}
+
+      {/* Toast Component */}
+      <ToastContainer
+        autoClose={3000}
+        closeOnClick
+        draggable
+        hideProgressBar
+        newestOnTop={false}
+        position="top-right"
+        pauseOnFocusLoss
+        pauseOnHover
+        rtl={false}
+        theme="colored"
+        transition={Slide}
+      />
     </>
   )
 }

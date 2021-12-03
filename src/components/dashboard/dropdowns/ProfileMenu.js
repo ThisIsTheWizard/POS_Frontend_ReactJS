@@ -1,15 +1,27 @@
 import React, { useState } from 'react'
+import { unsetLoginAccessToken } from '../../../api/auth/auth.helper'
+
+// Components
 import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
+
+// Images
 import avatar2 from '../../../assets/images/users/avatar-2.jpg'
+import { useNavigate } from 'react-router-dom'
 
 const ProfileMenu = () => {
   const username = 'The Wizard'
+  const navigate = useNavigate()
   const [isShowProfileMenu, setIsShowProfileMenu] = useState(false)
+
+  const handleLogout = () => {
+    unsetLoginAccessToken()
+    navigate('/login', { replace: true })
+  }
 
   return (
     <>
@@ -50,7 +62,7 @@ const ProfileMenu = () => {
             screen
           </DropdownItem>
           <DropdownItem divider />
-          <DropdownItem className="text-danger" href="/logout">
+          <DropdownItem className="text-danger" onClick={() => handleLogout()}>
             <i className="ri-shut-down-line align-middle mr-1 text-danger"></i>
             Logout
           </DropdownItem>

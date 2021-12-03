@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react'
-import { useLocation } from 'react-router'
+import React, { useEffect } from 'react'
+import { useLocation, Link } from 'react-router-dom'
+
+// Dependency Imports For Sidebar
 import MetisMenu from 'metismenujs'
-import { Link } from 'react-router-dom'
 
 const LeftSidebarContent = () => {
-  const location = useLocation()
-  const pathname = useRef(location.pathname)
+  const { pathname } = useLocation()
   const activateParentDropdown = (item) => {
     item.classList.add('active')
     const parent = item.parentElement
@@ -42,7 +42,7 @@ const LeftSidebarContent = () => {
       const items = ul.getElementsByTagName('a')
 
       for (let i = 0; i < items.length; ++i) {
-        if (pathname.current === items[i]?.pathname) {
+        if (pathname === items[i]?.pathname) {
           matchingMenuItem = items[i]
           break
         }
@@ -52,7 +52,7 @@ const LeftSidebarContent = () => {
       }
     }
     initMenu()
-  }, [])
+  }, [pathname])
 
   return (
     <>

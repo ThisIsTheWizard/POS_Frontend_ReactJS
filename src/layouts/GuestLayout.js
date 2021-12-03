@@ -1,26 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
+import { Navigate, Outlet } from 'react-router-dom'
 
-const GuestLayout = (props) => {
-  const [isShowPreloader, setIsShowPreloader] = useState(true)
-  useEffect(() => {
-    setIsShowPreloader((isShowPreloader) => !isShowPreloader)
-  }, [])
+const GuestLayout = ({ AppContext }) => {
+  const { loginAccessToken } = useContext(AppContext)
 
-  return (
-    <>
-      {isShowPreloader ? (
-        <div id="preloader">
-          <div id="status">
-            <div className="spinner">
-              <i className="ri-loader-line spin-icon"></i>
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      <>{props.children}</>
-    </>
-  )
+  return loginAccessToken ? <Navigate to="/dashboard" replace /> : <Outlet />
 }
 
 export default GuestLayout

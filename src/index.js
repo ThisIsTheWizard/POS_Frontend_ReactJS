@@ -2,23 +2,28 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
+// AppState From Context API
+import AppState from './context/State'
+
 // Main Components
 import App from './App'
+
 // Main Styles
 import './assets/scss/theme.scss'
+import 'react-toastify/dist/ReactToastify.css'
 
 // Apollo GraphQL Provider And Client
 import { ApolloProvider } from '@apollo/client'
 import client from './api/graphql'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ApolloProvider client={client}>
-      <BrowserRouter>
+  <ApolloProvider client={client}>
+    <BrowserRouter>
+      <AppState>
         <App />
-      </BrowserRouter>
-    </ApolloProvider>
-  </React.StrictMode>,
+      </AppState>
+    </BrowserRouter>
+  </ApolloProvider>,
   document.getElementById('root')
 )
 

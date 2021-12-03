@@ -1,21 +1,83 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { REGISTER_MUTATION } from '../../api/auth/auth.helper'
+
+// Components
+import { Link, useNavigate } from 'react-router-dom'
 import {
-  Row,
-  Col,
   Button,
-  Alert,
+  Col,
   Container,
-  Label,
   Form,
   FormGroup,
-  Input
+  Input,
+  Label,
+  Row
 } from 'reactstrap'
+import { toast } from 'react-toastify'
 
-// import images
+// Images
 import logoDark from '../../assets/images/logo-dark.png'
 
-const Register = () => {
+const Register = (props) => {
+  const navigate = useNavigate()
+  const [inputData, setInputData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmation_password: ''
+  })
+
+  const [register, { loading }] = useMutation(REGISTER_MUTATION, {
+    variables: { inputData }
+  })
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    // Handling form validation and error messages
+    const { name, email, password, confirmation_password } = inputData
+    if (!name) {
+      toast.error('Name is required!')
+      return false
+    }
+    if (!email) {
+      toast.error('Email is required!')
+      return false
+    }
+    if (!password) {
+      toast.error('Password is required!')
+      return false
+    }
+    if (!confirmation_password) {
+      toast.error('Confirmation password is required!')
+      return false
+    }
+    if (password !== confirmation_password) {
+      toast.error('Password does not match!')
+      return false
+    }
+
+    await register()
+      .then((res) => {
+        toast.success(
+          `${res.data.createAnUser.name}, you are successfully registered as an user!`
+        )
+
+        setInputData({
+          name: '',
+          email: '',
+          password: '',
+          confirmation_password: ''
+        })
+
+        navigate('/login')
+      })
+      .catch((err) => {
+        toast.error(err.message)
+      })
+  }
+
   return (
     <>
       <div className="home-btn d-none d-sm-block">
@@ -47,54 +109,81 @@ const Register = () => {
                           </p>
                         </div>
 
-                        <Alert color="success">
-                          Registration Done Successfully.
-                        </Alert>
-
-                        <Alert color="danger">Register Error</Alert>
-
                         <div className="p-2 mt-5">
                           <Form
-                            // onValidSubmit={this.handleSubmit}
+                            onSubmit={handleSubmit}
                             className="form-horizontal"
                           >
                             <FormGroup className="auth-form-group-custom mb-4">
-                              <i className="ri-mail-line auti-custom-input-icon"></i>
-                              <Label htmlFor="useremail">Email</Label>
+                              <i className="ri-user-2-line auti-custom-input-icon"></i>
+                              <Label>Name</Label>
                               <Input
-                                name="email"
-                                value="email"
-                                validate={{ email: true, required: true }}
-                                type="email"
+                                name="name"
+                                value={inputData.name}
+                                type="text"
                                 className="form-control"
-                                id="useremail"
-                                placeholder="Enter email"
+                                placeholder="Name"
+                                onChange={(event) =>
+                                  setInputData((obj) => ({
+                                    ...obj,
+                                    name: event.target.value
+                                  }))
+                                }
                               />
                             </FormGroup>
 
                             <FormGroup className="auth-form-group-custom mb-4">
-                              <i className="ri-user-2-line auti-custom-input-icon"></i>
-                              <Label htmlFor="username">Username</Label>
+                              <i className="ri-mail-line auti-custom-input-icon"></i>
+                              <Label>Email</Label>
                               <Input
-                                name="username"
-                                value="username"
-                                type="text"
+                                name="email"
+                                value={inputData.email}
+                                validate={{ email: true, required: true }}
+                                type="email"
                                 className="form-control"
-                                id="username"
-                                placeholder="Enter username"
+                                placeholder="Email"
+                                onChange={(event) =>
+                                  setInputData((obj) => ({
+                                    ...obj,
+                                    email: event.target.value
+                                  }))
+                                }
                               />
                             </FormGroup>
 
                             <FormGroup className="auth-form-group-custom mb-4">
                               <i className="ri-lock-2-line auti-custom-input-icon"></i>
-                              <Label htmlFor="userpassword">Password</Label>
+                              <Label>Password</Label>
                               <Input
                                 name="password"
-                                value="password"
+                                value={inputData.password}
                                 type="password"
                                 className="form-control"
-                                id="userpassword"
-                                placeholder="Enter password"
+                                placeholder="Password"
+                                onChange={(event) =>
+                                  setInputData((obj) => ({
+                                    ...obj,
+                                    password: event.target.value
+                                  }))
+                                }
+                              />
+                            </FormGroup>
+
+                            <FormGroup className="auth-form-group-custom mb-4">
+                              <i className="ri-lock-2-line auti-custom-input-icon"></i>
+                              <Label>Confirm Password</Label>
+                              <Input
+                                name="password"
+                                value={inputData.confirmation_password}
+                                type="password"
+                                className="form-control"
+                                placeholder="Confirm Password"
+                                onChange={(event) =>
+                                  setInputData((obj) => ({
+                                    ...obj,
+                                    confirmation_password: event.target.value
+                                  }))
+                                }
                               />
                             </FormGroup>
 
@@ -104,7 +193,7 @@ const Register = () => {
                                 className="w-md waves-effect waves-light"
                                 type="submit"
                               >
-                                {false ? 'Loading ...' : 'Register'}
+                                {loading ? 'Loading ...' : 'Register'}
                               </Button>
                             </div>
 

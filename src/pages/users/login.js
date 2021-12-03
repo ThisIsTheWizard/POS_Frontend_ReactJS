@@ -1,19 +1,64 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useLazyQuery } from '@apollo/client'
+import { LOGIN_QUERY, setLoginAccessToken } from '../../api/auth/auth.helper'
+
+// Components
+import { Link, useNavigate } from 'react-router-dom'
 import {
-  Alert,
-  Row,
-  Col,
-  Input,
   Button,
-  Form,
+  Col,
   Container,
+  Form,
+  FormGroup,
+  Input,
   Label,
-  FormGroup
+  Row
 } from 'reactstrap'
+import { toast } from 'react-toastify'
+
+// Images
 import logoDark from '../../assets/images/logo-dark.png'
 
 const Login = () => {
+  const navigate = useNavigate()
+  const [queryData, setQueryData] = useState({
+    email: 'elias@elias.com',
+    password: '4567890321'
+  })
+
+  const [loginAnUser, { loading }] = useLazyQuery(LOGIN_QUERY, {
+    variables: { queryData },
+    onError: (error) => {
+      toast.error(error?.message)
+    },
+    onCompleted: (data) => {
+      if (data?.loginAccessToken) {
+        toast.success(
+          `${data?.loginAccessToken?.name}, you are successfully logged in!`
+        )
+        setLoginAccessToken(data?.loginAccessToken?.loginAccessToken)
+        navigate('/dashboard', { replace: true })
+      }
+    }
+  })
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+
+    // Handling form validation and error messages
+    const { email, password } = queryData
+    if (!email) {
+      toast.error('Email is required!')
+      return false
+    }
+    if (!password) {
+      toast.error('Password is required!')
+      return false
+    }
+
+    return loginAnUser()
+  }
+
   return (
     <>
       <div className="home-btn d-none d-sm-block">
@@ -44,53 +89,47 @@ const Login = () => {
                           </p>
                         </div>
 
-                        <Alert color="danger">Login Error</Alert>
-
                         <div className="p-2 mt-5">
                           <Form
+                            onSubmit={handleSubmit}
                             className="form-horizontal"
-                            // onValidSubmit={this.handleSubmit}
                           >
                             <FormGroup className="auth-form-group-custom mb-4">
-                              <i className="ri-user-2-line auti-custom-input-icon"></i>
-                              <Label htmlFor="username">Username</Label>
+                              <i className="ri-mail-line auti-custom-input-icon"></i>
+                              <Label>Email</Label>
                               <Input
-                                name="username"
-                                value="username"
-                                type="text"
-                                className="form-control"
-                                id="username"
+                                name="email"
+                                value={queryData.email}
                                 validate={{ email: true, required: true }}
-                                placeholder="Enter username"
+                                type="email"
+                                className="form-control"
+                                placeholder="Email"
+                                onChange={(event) =>
+                                  setQueryData((obj) => ({
+                                    ...obj,
+                                    email: event.target.value
+                                  }))
+                                }
                               />
                             </FormGroup>
 
                             <FormGroup className="auth-form-group-custom mb-4">
                               <i className="ri-lock-2-line auti-custom-input-icon"></i>
-                              <Label htmlFor="userpassword">Password</Label>
+                              <Label>Password</Label>
                               <Input
                                 name="password"
-                                value="password"
+                                value={queryData.password}
                                 type="password"
                                 className="form-control"
-                                id="userpassword"
-                                placeholder="Enter password"
+                                placeholder="Password"
+                                onChange={(event) =>
+                                  setQueryData((obj) => ({
+                                    ...obj,
+                                    password: event.target.value
+                                  }))
+                                }
                               />
                             </FormGroup>
-
-                            <div className="custom-control custom-checkbox">
-                              <Input
-                                type="checkbox"
-                                className="custom-control-input"
-                                id="customControlInline"
-                              />
-                              <Label
-                                className="custom-control-label"
-                                htmlFor="customControlInline"
-                              >
-                                Remember me
-                              </Label>
-                            </div>
 
                             <div className="mt-4 text-center">
                               <Button
@@ -98,7 +137,7 @@ const Login = () => {
                                 className="w-md waves-effect waves-light"
                                 type="submit"
                               >
-                                Log In
+                                {loading ? 'Loading ...' : 'Login'}
                               </Button>
                             </div>
 
