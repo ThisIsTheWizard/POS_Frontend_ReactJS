@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
-import { useLazyQuery } from '@apollo/client'
-import { LOGIN_QUERY, setLoginAccessToken } from '../../api/auth/auth.helper'
+import React, { useContext, useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { LOGIN_MUTATION, setLoginAccessToken } from '../../api/auth/auth.helper'
+import { Link } from 'react-router-dom'
+
+// AppContext From Context API
+import AppContext from '../../context/Context'
 
 // Components
-import { Link, useNavigate } from 'react-router-dom'
 import {
   Button,
   Col,
@@ -20,24 +23,22 @@ import { toast } from 'react-toastify'
 import logoDark from '../../assets/images/logo-dark.png'
 
 const Login = () => {
-  const navigate = useNavigate()
-  const [queryData, setQueryData] = useState({
+  const { setIsLoggedIn } = useContext(AppContext)
+  const [inputData, setInputData] = useState({
     email: 'elias@elias.com',
     password: '4567890321'
   })
 
-  const [loginAnUser, { loading }] = useLazyQuery(LOGIN_QUERY, {
-    variables: { queryData },
+  const [loginAnUser, { loading }] = useMutation(LOGIN_MUTATION, {
+    variables: { inputData },
     onError: (error) => {
       toast.error(error?.message)
     },
     onCompleted: (data) => {
-      if (data?.loginAccessToken) {
-        toast.success(
-          `${data?.loginAccessToken?.name}, you are successfully logged in!`
-        )
-        setLoginAccessToken(data?.loginAccessToken?.loginAccessToken)
-        navigate('/dashboard', { replace: true })
+      if (data?.loginAnUser) {
+        toast.success('You are successfully logged in!')
+        setLoginAccessToken(data.loginAnUser)
+        setIsLoggedIn(true)
       }
     }
   })
@@ -46,7 +47,7 @@ const Login = () => {
     event.preventDefault()
 
     // Handling form validation and error messages
-    const { email, password } = queryData
+    const { email, password } = inputData
     if (!email) {
       toast.error('Email is required!')
       return false
@@ -99,13 +100,13 @@ const Login = () => {
                               <Label>Email</Label>
                               <Input
                                 name="email"
-                                value={queryData.email}
+                                value={inputData.email}
                                 validate={{ email: true, required: true }}
                                 type="email"
                                 className="form-control"
                                 placeholder="Email"
                                 onChange={(event) =>
-                                  setQueryData((obj) => ({
+                                  setInputData((obj) => ({
                                     ...obj,
                                     email: event.target.value
                                   }))
@@ -118,12 +119,12 @@ const Login = () => {
                               <Label>Password</Label>
                               <Input
                                 name="password"
-                                value={queryData.password}
+                                value={inputData.password}
                                 type="password"
                                 className="form-control"
                                 placeholder="Password"
                                 onChange={(event) =>
-                                  setQueryData((obj) => ({
+                                  setInputData((obj) => ({
                                     ...obj,
                                     password: event.target.value
                                   }))
@@ -155,7 +156,7 @@ const Login = () => {
 
                         <div className="mt-5 text-center">
                           <p>
-                            Don't have an account ?
+                            Don&apos;t have an account ?
                             <Link
                               to="/register"
                               className="font-weight-medium text-primary"

@@ -15,15 +15,17 @@ const Breadcrumbs = (props) => {
             <div className="page-title-right">
               <Breadcrumb listClassName="m-0">
                 {props.breadcrumbItems.map((item, key) =>
-                  key + 1 === itemsLength ? (
+                  key + 1 === itemsLength
+                    ? (
                     <BreadcrumbItem key={key} active>
                       {item.title}
                     </BreadcrumbItem>
-                  ) : (
+                      )
+                    : (
                     <BreadcrumbItem key={key}>
                       <Link to={item.link}>{item.title}</Link>
                     </BreadcrumbItem>
-                  )
+                      )
                 )}
               </Breadcrumb>
             </div>

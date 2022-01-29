@@ -7,13 +7,15 @@ const LeftSidebar = (props) => {
     <>
       <div className="vertical-menu">
         <div data-simplebar className="h-100">
-          {props.type !== 'condensed' ? (
+          {props.type !== 'condensed'
+            ? (
             <SimpleBar style={{ maxHeight: '100%' }}>
               <LeftSidebarContent />
             </SimpleBar>
-          ) : (
+              )
+            : (
             <LeftSidebarContent />
-          )}
+              )}
         </div>
       </div>
     </>

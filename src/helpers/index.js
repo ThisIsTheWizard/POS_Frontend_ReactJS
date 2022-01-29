@@ -7,7 +7,7 @@ export const manageBodyClass = (className, actionType) => {
   if (document.body) {
     if (actionType === 'add') {
       document.body.classList.add(className)
-    } else if ((actionType = 'remove')) {
+    } else if (actionType === 'remove') {
       document.body.classList.remove(className)
     } else {
       document.body.classList.toggle(className)

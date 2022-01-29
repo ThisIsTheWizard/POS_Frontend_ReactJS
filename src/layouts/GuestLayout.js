@@ -1,10 +1,15 @@
 import React, { useContext } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 const GuestLayout = ({ AppContext }) => {
-  const { loginAccessToken } = useContext(AppContext)
+  const location = useLocation()
+  const { isLoggedIn } = useContext(AppContext)
 
-  return loginAccessToken ? <Navigate to="/dashboard" replace /> : <Outlet />
+  if (isLoggedIn) {
+    return <Navigate to="/" replace state={{ from: location }} />
+  }
+
+  return <Outlet />
 }
 
 export default GuestLayout

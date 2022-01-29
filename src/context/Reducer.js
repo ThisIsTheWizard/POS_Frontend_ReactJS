@@ -2,9 +2,6 @@ const Reducers = (state, action) => {
   const { type, payload } = action
 
   switch (type) {
-    default:
-      return state
-
     case 'LOADING':
       return {
         ...state,
@@ -22,6 +19,9 @@ const Reducers = (state, action) => {
         ...state,
         isLoggedIn: payload
       }
+
+    default:
+      return state
   }
 }
 

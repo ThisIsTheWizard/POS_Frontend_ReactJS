@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 // Layout Related Components
 import Header from '../components/dashboard/common/Header'
@@ -11,6 +11,7 @@ import { toast } from 'react-toastify'
 import { useCallback } from 'react/cjs/react.development'
 
 const AuthLayout = ({ AppContext }) => {
+  const location = useLocation()
   const { isLoggedIn, authUser } = useContext(AppContext)
 
   const setToasMessageForAuthUser = useCallback(() => {
@@ -24,21 +25,23 @@ const AuthLayout = ({ AppContext }) => {
     // eslint-disable-next-line
   }, [])
 
-  return isLoggedIn ? (
-    <div id="layout-wrapper">
-      <Header />
+  if (isLoggedIn) {
+    return (
+      <div id="layout-wrapper">
+        <Header />
 
-      <LeftSideBar />
+        <LeftSideBar />
 
-      <div className="main-content">
-        <Outlet />
+        <div className="main-content">
+          <Outlet />
 
-        <Footer />
+          <Footer />
+        </div>
       </div>
-    </div>
-  ) : (
-    <Navigate to="/login" replace />
-  )
+    )
+  }
+
+  return <Navigate to="/login" replace state={{ from: location }} />
 }
 
 export default AuthLayout

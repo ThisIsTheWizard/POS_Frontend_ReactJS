@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { unsetLoginAccessToken } from '../../../api/auth/auth.helper'
+
+// AppContext From Context API
+import AppContext from '../../../context/Context'
 
 // Components
 import {
@@ -11,16 +14,16 @@ import {
 
 // Images
 import avatar2 from '../../../assets/images/users/avatar-2.jpg'
-import { useNavigate } from 'react-router-dom'
 
 const ProfileMenu = () => {
   const username = 'The Wizard'
-  const navigate = useNavigate()
+  const { setAuthUser, setIsLoggedIn } = useContext(AppContext)
   const [isShowProfileMenu, setIsShowProfileMenu] = useState(false)
 
   const handleLogout = () => {
     unsetLoginAccessToken()
-    navigate('/login', { replace: true })
+    setAuthUser({})
+    setIsLoggedIn(false)
   }
 
   return (

@@ -7,7 +7,7 @@ import { updateBodyClassAndAttribute } from '../../../helpers'
 import NotificationDropdown from '../dropdowns/NotificationDropdown'
 import ProfileMenu from '../dropdowns/ProfileMenu'
 
-//Import logo Images
+// Import logo Images
 import logosmlight from '../../../assets/images/logo-sm-light.png'
 import logolight from '../../../assets/images/logo-light.png'
 

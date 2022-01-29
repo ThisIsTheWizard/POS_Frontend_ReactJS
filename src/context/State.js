@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useReducer } from 'react'
-import { client } from '../api/graphql'
-import { getLoginAccessToken, AUTH_USER_QUERY } from '../api/auth/auth.helper'
+import {
+  handleAuthentication,
+  getLoginAccessToken
+} from '../api/auth/auth.helper'
 
 import AppContext from './Context'
 import AppReducer from './Reducer'
@@ -46,29 +48,12 @@ const AppState = ({ children }) => {
   )
   const actions = { setLoading, setIsLoggedIn, setAuthUser }
 
-  const handleAuthentication = useCallback(() => {
-    if (state.loginAccessToken) {
-      setLoading(true)
-      client
-        .query({ query: AUTH_USER_QUERY })
-        .then((res) => {
-          const { authUser } = res?.data
-
-          if (authUser?.name) {
-            setIsLoggedIn(true)
-            setAuthUser(authUser)
-          }
-          setLoading(false)
-        })
-        .catch((err) => {
-          console.log(err.message)
-          setLoading(false)
-        })
-    }
+  const handleAuthenticationFromState = useCallback(() => {
+    handleAuthentication({ state, setLoading, setIsLoggedIn, setAuthUser })
   }, [state, setLoading, setIsLoggedIn, setAuthUser])
 
   useEffect(() => {
-    handleAuthentication()
+    handleAuthenticationFromState()
     // eslint-disable-next-line
   }, [])
 

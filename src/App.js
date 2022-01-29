@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 
 // AppContext From Context API
 import AppContext from './context/Context'
@@ -21,15 +21,23 @@ import Dashboard from './pages/dashboard/index'
 import { ToastContainer, Slide } from 'react-toastify'
 
 const MyRoutes = () => {
+  const location = useLocation()
+
   return (
     <Routes>
       {/* Authenticated Routes */}
-      <Route path="/" element={<AuthLayout AppContext={AppContext} />}>
+      <Route element={<AuthLayout AppContext={AppContext} />}>
+        <Route
+          path="/"
+          element={
+            <Navigate to="/dashboard" replace state={{ from: location }} />
+          }
+        />
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
 
       {/* Guest Routes */}
-      <Route path="/" element={<GuestLayout AppContext={AppContext} />}>
+      <Route element={<GuestLayout AppContext={AppContext} />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>
@@ -42,7 +50,7 @@ const MyRoutes = () => {
 
 const App = () => {
   const { isLoading } = useContext(AppContext)
-  console.log(isLoading)
+
   return (
     <>
       {/* Loader */}

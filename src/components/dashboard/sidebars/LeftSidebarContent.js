@@ -21,7 +21,7 @@ const LeftSidebarContent = () => {
 
         if (parent3) {
           parent3.classList.add('mm-active') // li
-          parent3.childNodes[0].classList.add('mm-active') //a
+          parent3.childNodes[0].classList.add('mm-active') // a
           const parent4 = parent3.parentElement
           if (parent4) {
             parent4.classList.add('mm-active')
@@ -35,7 +35,7 @@ const LeftSidebarContent = () => {
 
   useEffect(() => {
     const initMenu = () => {
-      new MetisMenu('#side-menu')
+      new MetisMenu('#side-menu') // eslint-disable-line no-new
 
       let matchingMenuItem = null
       const ul = document.getElementById('side-menu')
