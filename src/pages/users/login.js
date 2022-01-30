@@ -25,8 +25,8 @@ import logoDark from '../../assets/images/logo-dark.png'
 const Login = () => {
   const { setIsLoggedIn } = useContext(AppContext)
   const [inputData, setInputData] = useState({
-    email: 'elias@elias.com',
-    password: '4567890321'
+    email: '',
+    password: ''
   })
 
   const [loginAnUser, { loading }] = useMutation(LOGIN_MUTATION, {
@@ -156,7 +156,9 @@ const Login = () => {
 
                         <div className="mt-5 text-center">
                           <p>
-                            Don&apos;t have an account ?
+                            <span className="mr-1">
+                              Don&apos;t have an account?
+                            </span>
                             <Link
                               to="/register"
                               className="font-weight-medium text-primary"

@@ -210,7 +210,9 @@ const Register = (props) => {
 
                         <div className="mt-5 text-center">
                           <p>
-                            Already have an account ?
+                            <span className="mr-1">
+                              Already have an account?
+                            </span>
                             <Link
                               to="/login"
                               className="font-weight-medium text-primary"
