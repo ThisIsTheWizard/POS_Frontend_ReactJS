@@ -28,7 +28,6 @@ export const handleAuthentication = ({
       .query({ query: AUTH_USER_QUERY })
       .then((res) => {
         const { getAnUser: authUser } = res?.data
-        console.log('res', res)
         if (authUser?.name) {
           setIsLoggedIn(true)
           setAuthUser(authUser)

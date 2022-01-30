@@ -14,14 +14,14 @@ const AuthLayout = ({ AppContext }) => {
   const location = useLocation()
   const { isLoggedIn, authUser } = useContext(AppContext)
 
-  const setToasMessageForAuthUser = useCallback(() => {
+  const setToastMessageForAuthUser = useCallback(() => {
     if (isLoggedIn && authUser && authUser.name) {
-      toast.success(`${authUser?.name}, Welcome to dashboard!`)
+      toast.success(`${authUser?.name}, welcome to dashboard!`)
     }
   }, [isLoggedIn, authUser])
 
   useEffect(() => {
-    setToasMessageForAuthUser()
+    setToastMessageForAuthUser()
     // eslint-disable-next-line
   }, [])
 
