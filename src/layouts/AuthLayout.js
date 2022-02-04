@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 // Layout Related Components
@@ -9,7 +9,6 @@ import Footer from '../components/dashboard/common/Footer'
 
 // Toast Triggering Object
 import { toast } from 'react-toastify'
-import { useCallback } from 'react/cjs/react.development'
 
 const AuthLayout = ({ AppContext }) => {
   const location = useLocation()
