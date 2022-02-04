@@ -16,6 +16,8 @@ import ErrorLayout from './layouts/ErrorLayout'
 import Login from './pages/users/login'
 import Register from './pages/users/register'
 import Dashboard from './pages/dashboard/index'
+import Product from './pages/dashboard/product/index'
+import Products from './pages/dashboard/products/index'
 
 // Toast Components
 import { ToastContainer, Slide } from 'react-toastify'
@@ -26,7 +28,7 @@ const MyRoutes = () => {
   return (
     <Routes>
       {/* Authenticated Routes */}
-      <Route element={<AuthLayout AppContext={AppContext} />}>
+      <Route path="/" element={<AuthLayout AppContext={AppContext} />}>
         <Route
           path="/"
           element={
@@ -34,10 +36,12 @@ const MyRoutes = () => {
           }
         />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/product" element={<Product />} />
+        <Route path="/dashboard/products" element={<Products />} />
       </Route>
 
       {/* Guest Routes */}
-      <Route element={<GuestLayout AppContext={AppContext} />}>
+      <Route path="/" element={<GuestLayout AppContext={AppContext} />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Route>

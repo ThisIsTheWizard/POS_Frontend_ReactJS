@@ -1,5 +1,4 @@
 import React from 'react'
-import { Container } from 'reactstrap'
 import Breadcrumbs from '../../components/dashboard/common/Breadcrumbs'
 
 const StarterPage = () => {
@@ -10,11 +9,7 @@ const StarterPage = () => {
 
   return (
     <>
-      <div className="page-content">
-        <Container fluid>
-          <Breadcrumbs title="Dashboard" breadcrumbItems={breadcrumbItems} />
-        </Container>
-      </div>
+      <Breadcrumbs title="Dashboard" breadcrumbItems={breadcrumbItems} />
     </>
   )
 }

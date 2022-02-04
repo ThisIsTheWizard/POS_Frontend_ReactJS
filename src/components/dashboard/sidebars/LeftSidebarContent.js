@@ -71,6 +71,20 @@ const LeftSidebarContent = () => {
           </li>
 
           <li>
+            <Link to="/dashboard/product" className="waves-effect">
+              <i className="ri-dashboard-line"></i>
+              <span className="ml-1">Product</span>
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/dashboard/products" className="waves-effect">
+              <i className="ri-dashboard-line"></i>
+              <span className="ml-1">Products</span>
+            </Link>
+          </li>
+
+          <li>
             <Link to="#" className=" waves-effect">
               <i className="ri-calendar-2-line"></i>
               <span className="ml-1">Calendar</span>

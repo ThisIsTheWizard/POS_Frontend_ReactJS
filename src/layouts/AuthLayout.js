@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 // Layout Related Components
+import { Container } from 'reactstrap'
 import Header from '../components/dashboard/common/Header'
 import LeftSideBar from '../components/dashboard/sidebars/LeftSidebar'
 import Footer from '../components/dashboard/common/Footer'
@@ -33,8 +34,11 @@ const AuthLayout = ({ AppContext }) => {
         <LeftSideBar />
 
         <div className="main-content">
-          <Outlet />
-
+          <div className="page-content">
+            <Container fluid>
+              <Outlet />
+            </Container>
+          </div>
           <Footer />
         </div>
       </div>
