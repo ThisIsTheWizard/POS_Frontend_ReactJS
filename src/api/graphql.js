@@ -16,7 +16,7 @@ const authLink = setContext((_, { headers }) => {
 const httpLink = createHttpLink({
   uri:
     process.env.API_URL ||
-    'https://pos-backend-apollo-server.herokuapp.com/graphql'
+    'https://pos-backend-apollo-server.up.railway.app/graphql'
 })
 
 export const client = new ApolloClient({
